@@ -1,3 +1,9 @@
+import Popup from "../../components/popup";
 export default function Home() {
-  return <div>home page</div>;
+  return (
+    <div>
+      <div>click</div>
+      <Popup></Popup>
+    </div>
+  );
 }

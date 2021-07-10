@@ -1,3 +1,4 @@
+import style from "./index.module.css";
 export default function Popup() {
-    return <div>popup</div>
+  return <div className={style.haha}>popup</div>;
 }
