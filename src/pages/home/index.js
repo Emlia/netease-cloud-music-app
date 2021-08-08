@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import Drawer from "../../components/drawer";
+import Swiper from "../../components/swiper";
 export default function Home() {
   const [showPopup, togglePopup] = useState(false);
 
@@ -11,7 +12,7 @@ export default function Home() {
   const onClickMask = () => {
     togglePopup(false);
   };
-  
+
   return (
     <div>
       <div onClick={tap}>click</div>
@@ -19,6 +20,7 @@ export default function Home() {
       <Drawer show={showPopup} onClickMask={onClickMask}>
         <div className="bg-white w-6/12 h-screen"></div>
       </Drawer>
+      <Swiper></Swiper>
     </div>
   );
 }
