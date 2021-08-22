@@ -1,6 +1,5 @@
-import { noop } from "../../utils";
-export class ApiService {
-  _fetch;
+import utils from "../../utils";
+export default class ApiService {
   constructor(fetchLib) {
     this._fetch = fetchLib;
   }
@@ -15,7 +14,8 @@ export class ApiService {
       withCredentials = true,
     } = options;
     if (mock) {
-      const adaptor = options.adaptor || noop;
+      console.log("++ use mock");
+      const adaptor = config.adaptor || utils.noop;
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve(adaptor(mockData));
@@ -28,7 +28,7 @@ export class ApiService {
       }
       return this._fetch(config.api, config.params, requestConfig).then(
         (result) => {
-          const adaptor = options.adaptor || noop;
+          const adaptor = config.adaptor || utils.noop;
           return adaptor(result);
         }
       );

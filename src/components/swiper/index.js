@@ -1,64 +1,50 @@
 import classNames from "classnames";
-import { useCallback, useMemo, useState } from "react";
-import { useInterval } from "../../hooks";
-import { nextTick } from "../../utils/other";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import useInterval from "@hooks/useInterval";
+import utils from "@utils";
 
-const colors = ["red", "green", "blue", "yellow"];
-const len = colors.length;
-export default function Swiper({ width = 200 }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+export default function Swiper({ children, ...others }) {
+  const [len] = useState(children.length);
+  const [width, setWidth] = useState(0);
   const [canMove, setMove] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const swiperRef = useRef(null);
 
   useInterval(() => {
-    const i = (currentIndex + 1) % (len + 1);
-    setCurrentIndex(i);
-    console.log("++ i", i);
+    if (width) {
+      const i = (currentIndex + 1) % (len + 1);
+      // console.log(`len:${len},currentIndex:${currentIndex},i:${i}`);
+      setCurrentIndex(i);
+    }
   }, 2000);
 
+  useEffect(() => {
+    if (swiperRef.current) {
+      const width = getComputedStyle(swiperRef.current).width;
+      setWidth(parseInt(width, 10));
+    }
+  }, []);
+
   const handleTransition = useCallback(() => {
-    if (currentIndex === len) {
+    // console.log("++ handleTransition", width, currentIndex, len);
+    if (width && currentIndex === len) {
       setMove(false);
       setCurrentIndex(0);
-      nextTick(() => {
+      utils.nextTick(() => {
         setMove(true);
       });
     }
-  }, [currentIndex]);
+  }, [width, currentIndex, len]);
 
-  const listRender = useMemo(() => {
-    const first = colors[0];
-    return (
-      <>
-        {colors.map((item, idx) => (
-          <div
-            key={item + idx}
-            style={{
-              width: `${width}px`,
-              height: "100px",
-              backgroundColor: item,
-            }}
-            className="flex-none"
-          >
-            {idx}
-          </div>
-        ))}
-        <div
-          key={first + len}
-          style={{
-            width: `${width}px`,
-            height: "100px",
-            backgroundColor: first,
-          }}
-          className="flex-none"
-        >
-          -1
-        </div>
-      </>
-    );
-  }, [width]);
+  const first = useMemo(() => {
+    if (children.len < 2) {
+      return null;
+    }
+    return children[0];
+  }, [children]);
 
   return (
-    <div style={{ width: `${width}px` }} className="overflow-hidden">
+    <div {...others} ref={swiperRef} className="overflow-hidden">
       <div
         onTransitionEnd={handleTransition}
         className={classNames(
@@ -71,7 +57,8 @@ export default function Swiper({ width = 200 }) {
           transform: `translateX(-${width * currentIndex}px)`,
         }}
       >
-        {listRender}
+        {children}
+        {first}
       </div>
     </div>
   );

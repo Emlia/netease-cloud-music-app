@@ -1,4 +1,5 @@
 import { compose } from "../middleware";
+
 function handleResponse(ctx) {
   console.log(`get ${ctx.request.url}  successfully`, ctx.response);
   return ctx.response;

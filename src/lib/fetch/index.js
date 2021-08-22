@@ -1,17 +1,31 @@
 /* eslint-disable import/no-anonymous-default-export */
-import FetchLib from "./fetch";
+import FetchLib from "./lib";
 import axios from "axios";
+import utils from "../../utils";
+import { baseUrl } from "../../constant";
 
 const defaultOptions = {
   timeout: 2000,
   responseType: "json",
   responseEncoding: "utf8",
 };
+
 const fetchLib = new FetchLib();
 
 fetchLib.use(async (ctx, next) => {
+  const start = utils.time.getNow();
   await next();
+  const end = utils.time.getNow();
+  console.log("++ use time", end - start);
   return ctx;
+});
+
+fetchLib.use(async (ctx, next) => {
+  const {
+    request: { url = "" },
+  } = ctx;
+  ctx.request.url = `${baseUrl}${url}`;
+  await next();
 });
 
 fetchLib.use(async (ctx, next) => {

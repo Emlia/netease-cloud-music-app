@@ -7,8 +7,11 @@ export default function useInterval(
   options = { immediate: false }
 ) {
   const funRef = useRef(null);
-  funRef.current = fun;
   const immediate = options.immediate;
+
+  useEffect(() => {
+    funRef.current = fun;
+  });
 
   useEffect(() => {
     if (!utils.data.isFunction(funRef.current)) {
