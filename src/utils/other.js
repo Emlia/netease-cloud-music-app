@@ -23,10 +23,20 @@ function requestSuccess(result) {
   return result && result.code === 200;
 }
 
+function pageHidden() {
+  return document.visibilityState === "hidden";
+}
+
+function pageVisible() {
+  return document.visibilityState === "visible";
+}
+
 export default {
   nextTick,
   noop,
   no,
   yes,
-  requestSuccess
+  requestSuccess,
+  pageHidden,
+  pageVisible
 };

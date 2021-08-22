@@ -11,12 +11,13 @@ export default function Swiper({ children, ...others }) {
   const swiperRef = useRef(null);
 
   useInterval(() => {
-    if (width) {
+    const visible = utils.pageVisible();
+    if (visible && width) {
       const i = (currentIndex + 1) % (len + 1);
       // console.log(`len:${len},currentIndex:${currentIndex},i:${i}`);
       setCurrentIndex(i);
     }
-  }, 2000);
+  }, 2500);
 
   useEffect(() => {
     if (swiperRef.current) {
