@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useInterval from "@hooks/useInterval";
 import utils from "@utils";
 
-export default function Swiper({ children, ...others }) {
+export default function Swiper({ children, customClassName, ...others }) {
   const [len] = useState(children.length);
   const [width, setWidth] = useState(0);
   const [canMove, setMove] = useState(true);
@@ -45,7 +45,11 @@ export default function Swiper({ children, ...others }) {
   }, [children]);
 
   return (
-    <div {...others} ref={swiperRef} className="overflow-hidden">
+    <div
+      {...others}
+      ref={swiperRef}
+      className={classNames("overflow-hidden", "rounded-lg", customClassName)}
+    >
       <div
         onTransitionEnd={handleTransition}
         className={classNames(

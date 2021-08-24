@@ -1,8 +1,8 @@
 import { useLayoutEffect, useState } from "react";
 import { getBanners } from "@service";
-import Swiper from "@comp/swiper";
+import Swiper from "../../components/swiper";
 
-export default function Banner() {
+export default function Banner({ customClassName }) {
   const [banners, setBanner] = useState([]);
 
   useLayoutEffect(() => {
@@ -16,7 +16,7 @@ export default function Banner() {
 
   if (banners.length) {
     return (
-      <Swiper style={{ width: "90vw", margin: "0 5vw" }}>
+      <Swiper customClassName={customClassName}>
         {banners.map((banner) => (
           <img
             key={banner.encodeId}

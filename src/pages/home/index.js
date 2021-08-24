@@ -1,27 +1,23 @@
-import { useCallback, useState } from "react";
-import Drawer from "@comp/drawer";
-import ErrorBoundary from "@comp/error";
-import Banner from "@modules/banner";
+import { useState } from "react";
+import Drawer from "../../components/drawer";
+import ErrorBoundary from "../../components/error";
+import Banner from "../../modules/banner";
+import Header from "../../modules/header";
+
 export default function Home() {
   const [showPopup, togglePopup] = useState(false);
 
-  const tap = useCallback(() => {
+  const showSideBar = () => {
     togglePopup(!showPopup);
-    // console.log("showPopup", showPopup);
-  }, [showPopup]);
-
-  const onClickMask = () => {
-    togglePopup(false);
   };
 
   return (
     <ErrorBoundary>
-      <div onClick={tap}>click</div>
-      <div>showPopup:{`${showPopup}`}</div>
-      <Drawer show={showPopup} onClickMask={onClickMask}>
+      <Header showSideBar={showSideBar} customClassName="mt-2"></Header>
+      <Banner customClassName="mt-2 white-space-5"></Banner>
+      <Drawer show={showPopup} onClickMask={showSideBar}>
         <div className="bg-white w-6/12 h-screen"></div>
       </Drawer>
-      <Banner></Banner>
     </ErrorBoundary>
   );
 }
